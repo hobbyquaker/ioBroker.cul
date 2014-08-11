@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "cul",
-        "version":                  "0.0.1",
+        "version":                  "0.0.2",
         "title":                    "CUL/culfw",
         "desc":                     "Javascript/Node.js based Busware CUL USB / culfw adapter",
         "platform":                 "javascript/Node.js",
@@ -14,6 +14,52 @@
         "mode": "SlowRF"
     },
     "objects": [
+        {
+            "_id": "_design/cul",
+            "language": "javascript",
+            "views": {
+                "devices": {
+                    "map": "function(doc) {\n  if (doc.type == 'device' && doc._id.slice(0, 4) == 'cul') {\n   emit(doc._id, doc);\n  }\n}"
+                }
+            }
 
+        },
+        {
+            "_id": "cul.meta.roles",
+            "parent": "cul",
+            "type": "meta",
+            "meta": {
+                "type": "roles",
+                "adapter": "cul"
+            },
+            "common": {
+
+            },
+            "native": {
+                "temperature": {
+                    "type": "number",
+                    "unit": "°C",
+                    "read": true,
+                    "write": false,
+                    "role": "value.temperature"
+                },
+                "humidity": {
+                    "type": "number",
+                    "unit": "%",
+                    "min": 0,
+                    "max": 100,
+                    "read": true,
+                    "write": false,
+                    "role": "value.humidity"
+                },
+                "battery": {
+                    "type": "number",
+                    "list": ["ok", "empty", "replaced"],
+                    "read": true,
+                    "write": false,
+                    "role": "indicator"
+                }
+            }
+        }
     ]
 }
