@@ -6,7 +6,11 @@
         "desc":                     "Javascript/Node.js based Busware CUL USB / culfw adapter",
         "platform":                 "javascript/Node.js",
         "mode":                     "daemon",
-        "loglevel":                 "info"
+        "loglevel":                 "info",
+        "license":                  "GPLv2",
+        "icon":                     "busware.jpg",
+        "extIcon":                  "https://raw.githubusercontent.com/ioBroker/ioBroker.cul/master/admin/busware.jpg",
+        "keywords":                 ["cul", "coc", "cuno", "FS20", "MAX!", "HMS", "FHT", "EM", "ELV", "868", "busware"]
     },
     "native": {
         "serialport": "/dev/ttyACM0",
@@ -36,6 +40,12 @@
 
             },
             "native": {
+                "cmd": {
+                    "type": "number",
+                    "read": true,
+                    "write": false,
+                    "role": "cmd"
+                },
                 "temperature": {
                     "type": "number",
                     "unit": "°C",
