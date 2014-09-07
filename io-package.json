@@ -9,7 +9,7 @@
         "loglevel":                 "info",
         "license":                  "GPLv2",
         "icon":                     "busware.jpg",
-        "extIcon":                  "https://raw.githubusercontent.com/ioBroker/ioBroker.cul/master/admin/busware.jpg",
+        "extIcon":                  "https://raw.githubusercontent.com/hobbyquaker/ioBroker.cul/master/admin/busware.jpg",
         "keywords":                 ["cul", "coc", "cuno", "FS20", "MAX!", "HMS", "FHT", "EM", "ELV", "868", "busware"]
     },
     "native": {
