@@ -18,7 +18,13 @@ adapter.on('stateChange', function (id, state) {
 });
 
 adapter.on('unload', function (callback) {
-    if (cul) cul.close();
+    if (cul) {
+        try {
+            cul.close();
+        } catch (e) {
+            adapter.log.error('Cannot close serial port: ' + e.toString());
+        }
+    }
     callback();
 });
 
