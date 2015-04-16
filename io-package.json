@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "cul",
-        "version": "0.0.3",
+        "version": "0.0.4",
         "title":                    "CUL/culfw",
         "desc":                     "Javascript/Node.js based Busware CUL USB / culfw adapter",
         "platform":                 "javascript/Node.js",
@@ -10,7 +10,9 @@
         "license":                  "GPLv2",
         "icon":                     "busware.jpg",
         "extIcon":                  "https://raw.githubusercontent.com/ioBroker/ioBroker.cul/master/admin/busware.jpg",
-        "keywords":                 ["cul", "coc", "cuno", "FS20", "MAX!", "HMS", "FHT", "EM", "ELV", "868", "busware"]
+        "keywords":                 ["cul", "coc", "cuno", "FS20", "MAX!", "HMS", "FHT", "EM", "ELV", "868", "busware"],
+		"readme":                   "https://github.com/ioBroker/ioBroker.cul/blob/master/README.md",
+		"type":                     "hardware"
     },
     "native": {
         "serialport": "/dev/ttyACM0",
@@ -27,7 +29,6 @@
                     "map": "function(doc) {\n  if (doc.type == 'device' && doc._id.slice(0, 4) == 'cul') {\n   emit(doc._id, doc);\n  }\n}"
                 }
             }
-
         },
         {
             "_id": "cul.meta.roles",
