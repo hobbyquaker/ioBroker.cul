@@ -6,6 +6,9 @@ ioBroker adapter to control FS20, Max!, HMS and other devices via [CUL](http://b
 
 
 ## Changelog
+### 0.0.4 (2015-04-16)
+* (bluefox) update package.json
+
 ### 0.0.3 (2015-03-03)
 * (bluefox) try to bring the adapter to state of the art
 
