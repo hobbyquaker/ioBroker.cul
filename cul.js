@@ -2,16 +2,24 @@
 /*jslint node: true */
 
 var Cul = require('cul');
-"use strict";
+'use strict';
 
 // you have to require the utils module and call adapter function
 var utils = require(__dirname + '/lib/utils'); // Get common adapter utils
 
 var cul;
-var objects = {};
+var objects   = {};
 var metaRoles = {};
+var SerialPort;
 
 var adapter = utils.adapter('cul');
+
+try {
+    SerialPort = require('serialport');//.SerialPort;
+} catch (e) {
+    console.warn('Serial port is not available');
+}
+
 
 adapter.on('stateChange', function (id, state) {
     //if (cul) cul.cmd();
@@ -29,14 +37,86 @@ adapter.on('unload', function (callback) {
 });
 
 adapter.on('ready', function () {
-    main();
+    checkPort(function (err) {
+        if (!err) {
+            main();
+        } else {
+            adapter.log.error('Cannot open port: ' + err);
+        }
+    });
 });
+
+adapter.on('message', function (obj) {
+    if (obj) {
+        switch (obj.command) {
+            case 'listUart':
+                if (obj.callback) {
+                    if (SerialPort) {
+                        // read all found serial ports
+                        SerialPort.list(function (err, ports) {
+                            adapter.log.info('List of port: ' + JSON.stringify(ports));
+                            adapter.sendTo(obj.from, obj.command, ports, obj.callback);
+                        });
+                    } else {
+                        adapter.log.warn('Module serialport is not available');
+                        adapter.sendTo(obj.from, obj.command, [{comName: 'Not available'}], obj.callback);
+                    }
+                }
+
+                break;
+        }
+    }
+});
+
+function checkPort(callback) {
+    if (!adapter.config.serialport) {
+        if (callback) callback('Port is not selected');
+        return;
+    }
+
+    try {
+        var sPort = new SerialPort(adapter.config.serialport || '/dev/ttyACM0', {
+            baudrate: parseInt(adapter.config.baudrate, 10) || 9600
+        });
+        sPort.on('error', function (err) {
+            if (callback) callback(err);
+            callback = null;
+        });
+        setTimeout(function () {
+            if (callback) {
+                sPort.open(function (err) {
+                    if (!err) {
+                        try {
+                            sPort.close();
+                        } catch (e) {
+                            if (callback) callback(e);
+                            callback = null;
+                        }
+                    }
+                    if (callback) callback(err);
+                    callback = null;
+                });
+            }
+        }, 500);
+
+    } catch (e) {
+        adapter.log.error('Cannot open port: ' + e);
+        try {
+            sPort.close();
+        } catch (ee) {
+
+        }
+        if (callback) callback(e);
+    }
+}
 
 function main() {
     var options = {
-        serialport:     adapter.config.serialport || '/dev/ttyACM0',
-        baudrate:       adapter.config.baudrate   || 9600,
-        mode:           adapter.config.mode       || 'SlowRF'
+        serialport: adapter.config.serialport || '/dev/ttyACM0',
+        mode:       adapter.config.mode       || 'SlowRF',
+        baudrate:   parseInt(adapter.config.baudrate, 10) || 9600,
+        scc:        adapter.config.type === 'scc',
+        coc:        adapter.config.type === 'coc'
     };
 
     cul = new Cul(options);
@@ -93,6 +173,7 @@ function main() {
                     native: tmp
                 };
                 for (var _state in obj.data) {
+                    if (!obj.data.hasOwnProperty(_state)) continue;
                     var common = {};
 
                     if (metaRoles[obj.device + '_' + _state]) {
@@ -120,7 +201,6 @@ function main() {
             }
         });
     }
-
 }
 
 
