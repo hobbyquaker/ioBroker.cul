@@ -9,6 +9,11 @@
 <script type="text/javascript" src="../../js/translate.js"></script>
 <script type="text/javascript" src="../../js/adapter-settings.js"></script>
 
+<style>
+    .value {
+        width: 250px;
+    }
+</style>
 <script type="text/javascript">
     systemDictionary = {
         "CUL adapter settings":     {
@@ -86,7 +91,8 @@
             if (isAlive || common.enabled) {
                 getComPorts(settings.comName);
             } else {
-                $('#getUnit').prop('disabled', true);
+                $('#_serialport').html('<input id="serialport" class="value" value="' + settings.serialport + '"/>');
+                $('#serialport').change(onChange).keyup(onChange);
             }
         });
 
@@ -128,7 +134,7 @@
     <table>
         <tr>
             <td><label  class="translate" for="serialport">Serial port:</label></td>
-            <td><select id="serialport" class="value"></select></td>
+            <td id="_serialport"><select id="serialport" class="value"></select></td>
         </tr>
         <tr>
             <td class="translate">Baud rate</td>
