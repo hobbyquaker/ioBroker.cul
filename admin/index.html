@@ -89,7 +89,7 @@
 
         getIsAdapterAlive(function (isAlive) {
             if (isAlive || common.enabled) {
-                getComPorts(settings.comName);
+                getComPorts(settings.serialport);
             } else {
                 $('#_serialport').html('<input id="serialport" class="value" value="' + settings.serialport + '"/>');
                 $('#serialport').change(onChange).keyup(onChange);
