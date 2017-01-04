@@ -1,21 +1,33 @@
 {
     "common": {
         "name":                     "cul",
-        "version":                  "0.0.2",
+        "version": "0.1.0",
+        "news": {
+            "0.1.0": {
+                "en": "Update cul package",
+                "de": "Update cul Paket",
+                "ru": "Обновлён CUL модуль"
+            }
+        },
         "title":                    "CUL/culfw",
         "desc":                     "Javascript/Node.js based Busware CUL USB / culfw adapter",
         "platform":                 "javascript/Node.js",
         "mode":                     "daemon",
         "loglevel":                 "info",
-        "license":                  "GPLv2",
+        "license":                  "GPL-2.0",
+        "enabled":                  true,
+        "messagebox":               true,
         "icon":                     "busware.jpg",
-        "extIcon":                  "https://raw.githubusercontent.com/hobbyquaker/ioBroker.cul/master/admin/busware.jpg",
-        "keywords":                 ["cul", "coc", "cuno", "FS20", "MAX!", "HMS", "FHT", "EM", "ELV", "868", "busware"]
+        "extIcon":                  "https://raw.githubusercontent.com/ioBroker/ioBroker.cul/master/admin/busware.jpg",
+        "keywords":                 ["cul", "coc", "cuno", "FS20", "MAX!", "HMS", "FHT", "EM", "ELV", "868", "busware"],
+		"readme":                   "https://github.com/ioBroker/ioBroker.cul/blob/master/README.md",
+		"type":                     "hardware"
     },
     "native": {
-        "serialport": "/dev/ttyACM0",
-        "baudrate": 9600,
-        "mode": "SlowRF"
+        "serialport": "",
+        "baudrate":   9600,
+        "mode":       "SlowRF",
+        "type":       "cul"
     },
     "objects": [
         {
@@ -26,7 +38,6 @@
                     "map": "function(doc) {\n  if (doc.type == 'device' && doc._id.slice(0, 4) == 'cul') {\n   emit(doc._id, doc);\n  }\n}"
                 }
             }
-
         },
         {
             "_id": "cul.meta.roles",
